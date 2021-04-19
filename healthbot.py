@@ -36,9 +36,9 @@ def main():
 
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("start", start_handler))
-    dispatcher.add_handler(CommandHandler("add", add))
+
     dispatcher.add_handler(CommandHandler("help", help_command))
-    dispatcher.add_handler(CommandHandler("hello", hello))
+
     dispatcher.add_handler(CommandHandler("search", searchfood))
 
 
@@ -48,16 +48,42 @@ def main():
 
 
 def echo(update, context):
-    reply_message = update.message.text.upper()
+    global redis1
+    user_id = update.message.from_user.id
+    weight_pre = int(redis1.get(user_id).decode("UTF-8"))
+    weight = int(update.message.text)
+    def compare(weight_pre, weight):
+        compare_num = 0
+        compare_str = ""
+        if weight_pre > weight:
+            compare_num = weight_pre - weight
+            compare_str = "You have lost "+ str(compare_num) +" kilos in weight!"
+        elif weight_pre < weight:
+            compare_num = weight - weight_pre
+            compare_str = "You have gained "+ str(compare_num) +" kilos in weight!"
+        else:
+            compare_str = "Your weight hasn't changed!"
+        return compare_str
+
+    compare_weight = ""
+    compare_weight = compare(weight_pre, weight)
+
+    reply_message = "Your previous weight is " + str(weight_pre) + " kilos. Now your weight is " + str(weight)+" kilos. " + compare_weight
+    redis1.set(user_id, weight)
     logging.info("Update: " + str(update))
     logging.info("context: " + str(context))
     context.bot.send_message(chat_id=update.effective_chat.id, text= reply_message)
 
 def start_handler(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
+    global redis1
+    user_id = update.message.from_user.id
+    redis1.set(user_id, 0)
+
     welcome_message = "Hi, my dear master!\n" \
-                    "Send me your weight! Let me record for you!\n" \
-                    "Want to search food info? /search is for you!"
+                    "I can record your weight for you!\n" \
+                    "Just send me your weight(in kilos) here!\n" \
+                    "Also want to search food info? /search is for you!"
     reply_keyboard_markup = ReplyKeyboardMarkup([['/search egg'],['/search tomato']])
     update.message.reply_text(welcome_message, reply_markup=reply_keyboard_markup)
 
@@ -67,22 +93,6 @@ def start_handler(update: Update, context: CallbackContext) -> None:
 def help_command(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     update.message.reply_text('Helping you helping you.')
-
-def add(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /add is issued."""
-    try: 
-        global redis1
-        logging.info(context.args[0])
-        msg = context.args[0]   # /add keyword <-- this should store the keyword
-        redis1.incr(msg)
-        update.message.reply_text('You have said ' + msg +  ' for ' + redis1.get(msg).decode('UTF-8') + ' times.')
-    except (IndexError, ValueError):
-        update.message.reply_text('Usage: /add <keyword>')
-
-def hello(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /hello is issued."""
-    update.message.reply_text('Good day,' + context.args[0] + '!')
-
 
 
 url = "https://calorieninjas.p.rapidapi.com/v1/nutrition"
