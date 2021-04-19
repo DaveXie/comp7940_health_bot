@@ -5,14 +5,13 @@ import configparser
 import logging
 import redis
 import os
+import requests
 
 global redis1
 
 def main():
     # Load your token and create an Updater for your Bot
     
-    # config = configparser.ConfigParser()
-    # config.read('config.ini')
     config = configparser.ConfigParser()
     config.read('config.ini')
     updater = Updater(token=(config['TELEGRAM']['ACCESS_TOKEN']), use_context=True)
@@ -33,6 +32,7 @@ def main():
     dispatcher.add_handler(CommandHandler("add", add))
     dispatcher.add_handler(CommandHandler("help", help_command))
     dispatcher.add_handler(CommandHandler("hello", hello))
+    dispatcher.add_handler(CommandHandler("search", searchfood))
 
 
     # To start the bot:
@@ -67,6 +67,28 @@ def add(update: Update, context: CallbackContext) -> None:
 def hello(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /hello is issued."""
     update.message.reply_text('Good day,' + context.args[0] + '!')
+
+
+
+url = "https://calorieninjas.p.rapidapi.com/v1/nutrition"
+
+def searchfood(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /hello is issued."""
+    outputstr = ""
+    inputstring  = context.args[0]
+    querystring = {"query":inputstring}
+    headers = {
+        'x-rapidapi-key': "10240eda73mshec0bc03cd897568p16cae8jsnd9d2285d965e",
+        'x-rapidapi-host': "calorieninjas.p.rapidapi.com"
+        }
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    response = response.json()['items']
+    if (response == []): outputstr = "Sorry, I am not sure whether "+ inputstring + "is a kind of food or not."
+    else: 
+        res_data = response[0]
+        outputstr = inputstring + " contains " + str(res_data['sugar_g']) + "g sugar" + " and " + str(res_data['fiber_g']) + "g fiber" " as well as " + str(res_data['calories']) + " calories."
+
+    update.message.reply_text(outputstr)
 
 
 
