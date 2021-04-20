@@ -45,6 +45,8 @@ def echo(update, context):
     logging.info("Update: " + str(update))
     logging.info("context: " + str(context))
     context.bot.send_message(chat_id=update.effective_chat.id, text= reply_message)
+    # Bingxiang:4/19
+    context.bot.send_message(chat_id=update.effective_chat.id, text= "To get more commands, please type /help")
 
 
 # Define a few command handlers. These usually take the two arguments update and
