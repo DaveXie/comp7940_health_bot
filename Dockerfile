@@ -10,4 +10,4 @@ ENV PASSWORD=rhOK7SQtW4baUgkqlOQ4VJ4Eh8j9C1pc
 ENV REDISPORT=18976
 ENV APIKEY=10240eda73mshec0bc03cd897568p16cae8jsnd9d2285d965e
 
-CMD python chatbot.py
+CMD python healthbot.py
