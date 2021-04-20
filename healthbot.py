@@ -13,17 +13,17 @@ global rapid_headers
 def main():
     # Load your token and create an Updater for your Bot
     
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    updater = Updater(token=(config['TELEGRAM']['ACCESS_TOKEN']), use_context=True)
+    # config = configparser.ConfigParser()
+    # config.read('config.ini')
+    updater = Updater(token=(os.environ['ACCESS_TOKEN']), use_context=True)
     dispatcher = updater.dispatcher
     
     global redis1
-    redis1 = redis.Redis(host=(config['REDIS']['HOST']), password=(config['REDIS']['PASSWORD']), port=(config['REDIS']['REDISPORT']))
+    redis1 = redis.Redis(host=(os.environ['HOST']), password=(os.environ['PASSWORD']), port=(os.environ['REDISPORT']))
     
     global rapid_headers
     rapid_headers = {
-            'x-rapidapi-key': (config['RAPIDAPI']['APIKEY']),
+            'x-rapidapi-key': (os.environ['APIKEY']),
             'x-rapidapi-host': "calorieninjas.p.rapidapi.com"
             }
     # You can set this logging module, so you will know when and why things do not work as expected
