@@ -5,29 +5,6 @@ on:
       - main
       
 jobs: 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Deploy
-        env:
-          HEROKU_API_KEY: ${{secrets.HEROKU_API_KEY}}
-          HEROKU_APP_NAME: "hbxchatbotforcomp7940"  # Rename this to the app of your Heroku app.
-        run: git push -f https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git main
-  my-helloworld-job:
-    runs-on: ubuntu-latest   		# Set the type of machine to run on
-    steps:
-      - uses: actions/checkout@v2   # Step 1: Checks out a copy of your repository on the ubuntu-latest machine
-
-      - name: Say Hello World       # Step 2: Type the word 'Hello World'
-        run: echo 'Hello World'  	
-        
-      - name: View a file           # Step 3: Two sub-steps involved
-        run: |
-           echo 'Viewing the file: '   
-           cat requirements.txt
   safety-check:
     runs-on: ubuntu-latest
     steps:
@@ -35,5 +12,3 @@ jobs:
       
       - name: securityCheck       
         uses: aufdenpunkt/python-safety-check@master
-      
-         
