@@ -25,6 +25,6 @@ jobs:
           registry-login-server: healthbotregistry.azurecr.io
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: healthbot
+          name: healthbot3
           location: 'eastus2'
 
