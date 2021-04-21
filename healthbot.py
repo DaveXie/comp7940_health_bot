@@ -49,27 +49,36 @@ def main():
 
 def echo(update, context):
     global redis1
-    user_id = update.message.from_user.id
-    weight_pre = int(redis1.get(user_id).decode("UTF-8"))
-    weight = int(update.message.text)
-    def compare(weight_pre, weight):
-        compare_num = 0
-        compare_str = ""
-        if weight_pre > weight:
-            compare_num = weight_pre - weight
-            compare_str = "You have lost "+ str(compare_num) +" kilos in weight!"
-        elif weight_pre < weight:
-            compare_num = weight - weight_pre
-            compare_str = "You have gained "+ str(compare_num) +" kilos in weight!"
-        else:
-            compare_str = "Your weight hasn't changed!"
-        return compare_str
+    if update.message.text.isdigit():    
+        user_id = update.message.from_user.id
+        weight_pre = int(redis1.get(user_id).decode("UTF-8"))
+        weight = int(update.message.text)
+        
+        def compare(weight_pre, weight):
+            compare_num = 0
+            compare_str = ""
+            if weight_pre == 0:                     #handler of weight_pre==0
+                return compare_str                  #handler of weight_pre==0
+            if weight_pre > weight:
+                compare_num = weight_pre - weight
+                compare_str = "You have lost "+ str(compare_num) +" kilos in weight!"
+            elif weight_pre < weight:
+                compare_num = weight - weight_pre
+                compare_str = "You have gained "+ str(compare_num) +" kilos in weight!"
+            else:
+                compare_str = "Your weight hasn't changed!"
+            return compare_str
 
-    compare_weight = ""
-    compare_weight = compare(weight_pre, weight)
-
-    reply_message = "Your previous weight is " + str(weight_pre) + " kilos. Now your weight is " + str(weight)+" kilos. " + compare_weight
-    redis1.set(user_id, weight)
+        compare_weight = ""
+        compare_weight = compare(weight_pre, weight)
+    
+        if compare_weight == "":                                                                                #compare_str == "" --> weight_pre==0
+            reply_message = "OK! Your weight is " + str(weight) + " kilos. It has been recorded"
+        else:                                                                                                   #handler of weight_pre==0
+            reply_message = "Your previous weight is " + str(weight_pre) + " kilos. Now your weight is " + str(weight)+" kilos. " + compare_weight
+        redis1.set(user_id, weight)
+    else:
+        reply_message = "Please input digit without any letters/spaces/symbols"    
     logging.info("Update: " + str(update))
     logging.info("context: " + str(context))
     context.bot.send_message(chat_id=update.effective_chat.id, text= reply_message)
