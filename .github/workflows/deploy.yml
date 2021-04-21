@@ -24,6 +24,7 @@ jobs:
           login-server: healthbotregistry.azurecr.io
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
+          
 
       - name: Deploy
         run: |
