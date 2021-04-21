@@ -40,10 +40,10 @@ jobs:
         uses: 'azure/aci-deploy@v1'
         with:
           resource-group: 7940cloudcomputing-containerinstance
-          dns-name-label: healthbot2.eastus2.azurecontainer.io
+          dns-name-label: healthbot2
           image: healthbotregistry.azurecr.io/healthbot:latest
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
           name: healthbot2
-          location: 'East US 2'
+          location: 'eastus2'
 
