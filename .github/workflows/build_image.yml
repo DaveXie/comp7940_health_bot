@@ -1,4 +1,4 @@
-name: Build image
+name: Deploy to Azure
 on:
   push:
     branches:
@@ -31,5 +31,22 @@ jobs:
         run: |
           docker build -t healthbotregistry.azurecr.io/healthbot:latest .
           docker push healthbotregistry.azurecr.io/healthbot
+
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/healthbot:${{ github.sha }}
+          registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: healthbot3
+          location: 'eastus2'
 
 
