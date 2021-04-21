@@ -1,0 +1,51 @@
+name: Build image
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Login via Azure CLI'
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Login to Docker
+        uses: azure/docker-login@v1
+        with:
+          login-server: index.docker.io
+          username: ${{ secrets.DOCKERIO_USERNAME }}
+          password: ${{ secrets.DOCKERIO_PASSWORD }}
+
+      - name: Login to Azure
+        uses: azure/docker-login@v1
+        with:
+          login-server: healthbotregistry.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+
+      - name: Push image to Azure registry
+        run: |
+          docker build -t healthbotregistry.azurecr.io/healthbot:latest .
+          docker push healthbotregistry.azurecr.io/healthbot
+
+
+      - name: 'Deploy to Azure Container Instances'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: ${{ secrets.RESOURCE_GROUP }}
+          dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+          image: healthbotregistry.azurecr.io/healthbot
+          registry-login-server: healthbotregistry.azurecr.io
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: healthbotregistry
+          location: 'eastus2'
+
