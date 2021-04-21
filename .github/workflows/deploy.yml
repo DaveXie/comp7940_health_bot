@@ -33,13 +33,13 @@ jobs:
           docker push healthbotregistry.azurecr.io/healthbot
 
       - name: 'Deploy to Azure Container Instances'
-          uses: 'azure/aci-deploy@v1'
-          with:
-            resource-group: 7940cloudcomputing-containerinstance
-            dns-name-label: healthbot2.eastus2.azurecontainer.io
-            image: healthbotregistry.azurecr.io/healthbot:latest
-            registry-username: ${{ secrets.REGISTRY_USERNAME }}
-            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-            name: healthbot2
-            location: 'west us'
+        uses: 'azure/aci-deploy@v1'
+        with:
+          resource-group: 7940cloudcomputing-containerinstance
+          dns-name-label: healthbot2.eastus2.azurecontainer.io
+          image: healthbotregistry.azurecr.io/healthbot:latest
+          registry-username: ${{ secrets.REGISTRY_USERNAME }}
+          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+          name: healthbot2
+          location: 'west us'
 
