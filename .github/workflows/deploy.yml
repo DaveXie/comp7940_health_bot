@@ -38,12 +38,13 @@ jobs:
 
       - name: 'Deploy to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
-        with:
-          resource-group: 7940cloudcomputing-containerinstance
-          dns-name-label: healthbot2
-          image: healthbotregistry.azurecr.io/healthbot:latest
-          registry-username: ${{ secrets.REGISTRY_USERNAME }}
-          registry-password: ${{ secrets.REGISTRY_PASSWORD }}
-          name: healthbot2
-          location: 'eastus2'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+            image: healthbotregistry.azurecr.io/healthbot:latest
+            registry-login-server: healthbotregistry.azurecr.io
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: healthbot2
+            location: 'eastus2'
 
