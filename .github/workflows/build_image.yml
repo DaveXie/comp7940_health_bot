@@ -18,13 +18,19 @@ jobs:
           login-server: index.docker.io
           username: ${{ secrets.DOCKERIO_USERNAME }}
           password: ${{ secrets.DOCKERIO_PASSWORD }}
+          
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Login to Azure
         uses: azure/docker-login@v1
         with:
-          login-server: healthbotregistry.azurecr.io
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
 
 
       - name: Push image to Azure registry
@@ -32,10 +38,7 @@ jobs:
           docker build -t healthbotregistry.azurecr.io/healthbot:latest .
           docker push healthbotregistry.azurecr.io/healthbot
 
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
 
       - name: 'Deploy to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
