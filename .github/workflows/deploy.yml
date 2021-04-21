@@ -36,6 +36,7 @@ jobs:
           docker build -t healthbotregistry.azurecr.io/healthbot:latest .
           docker push healthbotregistry.azurecr.io/healthbot
 
+
       - name: 'Deploy to Azure Container Instances'
         uses: 'azure/aci-deploy@v1'
         with:
