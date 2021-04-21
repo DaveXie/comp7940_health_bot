@@ -42,7 +42,7 @@ jobs:
         with:
           resource-group: ${{ secrets.RESOURCE_GROUP }}
           dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
-          image: healthbotregistry.azurecr.io/healthbot:latest
+          image: healthbotregistry.azurecr.io/healthbot
           registry-login-server: healthbotregistry.azurecr.io
           registry-username: ${{ secrets.REGISTRY_USERNAME }}
           registry-password: ${{ secrets.REGISTRY_PASSWORD }}
