@@ -12,11 +12,8 @@ global rapid_headers
 
 def main():
     # Load your token and create an Updater for your Bot
-    
-    # config = configparser.ConfigParser()
-    # config.read('config.ini')
-    
-    #temp
+ 
+    #formal version 
     updater = Updater(token=(os.environ['ACCESS_TOKEN']), use_context=True)
     dispatcher = updater.dispatcher
     
@@ -28,7 +25,7 @@ def main():
             'x-rapidapi-key': (os.environ['APIKEY']),
             'x-rapidapi-host': "calorieninjas.p.rapidapi.com"
             }
-    #/temp
+    #/formal version 
     
     #local debug
     # config = configparser.ConfigParser()
@@ -77,9 +74,9 @@ def echo(update, context):
         def compare(weight_pre, weight):
             compare_num = 0
             compare_str = ""
-            if weight_pre == 0:                     #handler of weight_pre==0
-                return compare_str                  #handler of weight_pre==0
-            if weight_pre > weight:
+            if weight_pre == 0:                     #weight_pre==0?
+                return compare_str                  #exit the function if weight_pre==0, which makes compare_str == ""
+            if weight_pre > weight:                 #do something if weight_pre!=0, comfirm the content of compare_str
                 compare_num = weight_pre - weight
                 compare_str = "You have lost "+ str(compare_num) +" kilos in weight!"
             elif weight_pre < weight:
@@ -94,7 +91,7 @@ def echo(update, context):
     
         if compare_weight == "":                                                                                #compare_str == "" --> weight_pre==0
             reply_message = "OK! Your weight is " + str(weight) + " kilos. It has been recorded"
-        else:                                                                                                   #handler of weight_pre==0
+        else:                                                                                                   #works if weight_pre==0
             reply_message = "Your previous weight is " + str(weight_pre) + " kilos. Now your weight is " + str(weight)+" kilos. " + compare_weight
         redis1.set(user_id, weight)
     else:
@@ -121,13 +118,18 @@ def start_handler(update: Update, context: CallbackContext) -> None:
 # context. Error handlers also receive the raised TelegramError object in error.
 def help_command(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
-    update.message.reply_text('Helping you helping you.')
+    help_message = "I can handle these commands\n" \
+                    "number\n" \
+                    "/search\n" \
+                    "/help\n" \
+                    "/start(once you use this function, Your data will be initialized, use it carefully!!!)"
+    update.message.reply_text(help_message)
 
 
 url = "https://calorieninjas.p.rapidapi.com/v1/nutrition"
 
 def searchfood(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /hello is issued."""
+    """Send a message when the command /search is issued."""
     global rapid_headers
     try:
         outputstr = ""
