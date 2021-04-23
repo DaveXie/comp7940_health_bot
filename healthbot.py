@@ -63,7 +63,7 @@ def main():
     updater.start_polling()
     updater.idle()
 
-
+# weight recording
 def echo(update, context):
     global redis1
     if update.message.text.isdigit():    
@@ -90,16 +90,17 @@ def echo(update, context):
         compare_weight = compare(weight_pre, weight)
     
         if compare_weight == "":                                                                                #compare_str == "" --> weight_pre==0
-            reply_message = "OK! Your weight is " + str(weight) + " kilos. It has been recorded"
+            reply_message = "OK! Your weight is " + str(weight) + " kilos. It has been recorded."
         else:                                                                                                   #works if weight_pre==0
             reply_message = "Your previous weight is " + str(weight_pre) + " kilos. Now your weight is " + str(weight)+" kilos. " + compare_weight
         redis1.set(user_id, weight)
     else:
-        reply_message = "Please input digit without any letters/spaces/symbols"    
+        reply_message = "Please input digit without any letters/spaces/symbols."    
     logging.info("Update: " + str(update))
     logging.info("context: " + str(context))
     context.bot.send_message(chat_id=update.effective_chat.id, text= reply_message)
 
+# /start and the beginning of the bot 
 def start_handler(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
     global redis1
@@ -114,8 +115,7 @@ def start_handler(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(welcome_message, reply_markup=reply_keyboard_markup)
 
 
-# Define a few command handlers. These usually take the two arguments update and
-# context. Error handlers also receive the raised TelegramError object in error.
+# help command
 def help_command(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
     help_message = "I can handle these commands\n" \
@@ -128,6 +128,7 @@ def help_command(update: Update, context: CallbackContext) -> None:
 
 url = "https://calorieninjas.p.rapidapi.com/v1/nutrition"
 
+# search food
 def searchfood(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /search is issued."""
     global rapid_headers
