@@ -9,11 +9,11 @@
 **This project covers the following components:**
 
 - A Telegram Chat Bot
-    - t.me/lets_healthbot
+    - [@lets_healthbot](t.me/lets_healthbot)
 - A module to adopt the weight recording feature.
     - with RedisLabs
 - A module to adopt calories calculating feature.
-    - with rapidapi.com/calorieninjas/api/calorieninjas
+    - with [calorieninjas](https://rapidapi.com/calorieninjas/api/calorieninjas)
 - A Cloud platform to deploy the codes.
     - with Azure Container Registry & Container Instances
 - Docker container technologies.
@@ -53,3 +53,11 @@ Deploy container to Azure Container Instances (GitHub Actions)
 - **Reply to error input:**
 
     ![image](https://github.com/DaveXie/comp7940_health_bot/blob/main/resources/error.png)
+
+### Reference
+1. [CalorieNinjas ] (https://rapidapi.com/calorieninjas/api/calorieninjas)
+2. [Deploy-to-Azure ] (https://docs.microsoft.com/en-us/azure/developer/github/deploy-to-azure)
+3. [Configure a GitHub action to create a container instance] (https://docs.microsoft.com/zh-cn/azure/container-instances/container-instances-github-action)
+4. [為 Chatbot 添加新技能 ] (https://zaoldyeck.medium.com/add-custom-skill-into-chatbot-cef9bfeeef52#Last%20Step%20-%20Deployment)
+5. [Python Telegram Bot with Scheduled Tasks] (https://medium.com/analytics-vidhya/python-telegram-bot-with-scheduled-tasks-932edd61c534)
+6. [Build, Run, & Continuously Deploy Docker Containers to Azure App Service ] (https://www.youtube.com/watch?v=O5aXcmKc1HU)
