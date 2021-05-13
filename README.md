@@ -10,7 +10,7 @@
 
 - A Telegram Chat Bot
     - [@lets_healthbot](t.me/lets_healthbot)
-- A module to adopt the weight recording feature.
+- A module to adopt the weight recording feature..
     - with RedisLabs
 - A module to adopt calories calculating feature.
     - with [calorieninjas](https://rapidapi.com/calorieninjas/api/calorieninjas)
