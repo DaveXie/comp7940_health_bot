@@ -22,7 +22,7 @@
 
 ![image](https://github.com/DaveXie/comp7940_health_bot/blob/main/resources/workflow.png)
 
-Change committed and pushed to GitHub —> 
+Change committed and pushed to GitHub —> 》
 
 Build image through Dockerfile (GitHub Actions) —>
 
